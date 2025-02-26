@@ -28,7 +28,7 @@ exports.makeOrder = async (req, res, next) => {
         const io = getIO();
         io.emit('notification', notification);
         // 5) update the newOrder document
-        newOrder = await Order.findByIdAndUpdate(newOrder._id, { notification: notification._id })
+        newOrder = await Order.findByIdAndUpdate(newOrder._id, { notification: notification._id }, { new: true }).populate("laptops.laptop").populate("checkout");
         // 6) return response
         res.status(201).json({
             status: 'success',
