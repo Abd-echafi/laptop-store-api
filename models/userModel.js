@@ -42,13 +42,18 @@ const userSchema = new mongoose.Schema(
 );
 
 // Hash password before saving
-userSchema.pre("save", async function (next) {
-    if (!this.isModified("password")) return next();
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
-    this.comfirmPassword = undefined; // Remove the confirmation field
+userSchema.pre("findOneAndUpdate", async function (next) {
+    const update = this.getUpdate(); // Get the updated fields
+
+    if (update.password) {
+        const salt = await bcrypt.genSalt(10);
+        update.password = await bcrypt.hash(update.password, salt);
+        update.confirmPassword = undefined; // Remove confirm field
+    }
+
     next();
 });
+
 
 // Method to compare passwords
 userSchema.methods.correctPassword = async function (candidatePassword, currentPassword) {

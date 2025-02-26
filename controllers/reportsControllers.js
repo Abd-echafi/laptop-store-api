@@ -38,12 +38,12 @@ exports.createReport = async (req, res, next) => {
         admins.forEach((el, i) => {
             adminIds[i] = el._id;
         })
-        let notificationObj = { adminIds, type: "Report" };
+        let notificationObj = { adminIds, type: "Report", message: "Report" };
         const notification = await Notification.create(notificationObj);
         // Emit a real-time notification to all admins
         const io = getIO();
         io.emit("newReport", { report });
-        res.status(200).json({
+        res.status(201).json({
             status: "success",
             report,
         })
