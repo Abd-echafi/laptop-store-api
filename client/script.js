@@ -1,6 +1,7 @@
 const socket = io()
 socket.on('connect', () => {
-    socket.on('notification', (notification) => {
+    console.log("connected");
+    socket.on('newReport', (notification) => {
         console.log(notification);
     })
 })

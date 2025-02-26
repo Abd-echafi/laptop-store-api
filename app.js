@@ -9,6 +9,7 @@ const checkoutRouter = require('./routes/checkoutRoutes');
 const laptopRouter = require('./routes/laptopRouter');
 const orderRouter = require('./routes/OrderRouter');
 const NotificationRouter = require('./routes/notificationRouter');
+const reportsRouter = require('./routes/reportsRoutes')
 const connectDB = require('./config/connectDb'); // Database connection
 require('dotenv').config(); // Load environment variables
 
@@ -31,6 +32,7 @@ app.use('/api/v1/checkout', checkoutRouter);
 app.use('/api/v1/laptop', laptopRouter);
 app.use('/api/v1/Orders', orderRouter);
 app.use('/api/v1/Notifications', NotificationRouter);
+app.use('/api/v1/reports', reportsRouter);
 // Handle 404 errors
 app.use((req, res, next) => {
     res.status(404).json({
