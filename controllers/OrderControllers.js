@@ -38,6 +38,7 @@ exports.getAllOrders = async (req, res, next) => {
         let obj = {};
         let finalOrdersArray = [];
         finalOrders.forEach(order => {
+            obj._id = order._id;
             obj.model = order.laptops[0].laptop.model;
             let totalPrice = 0;
             totalPrice = totalPrice + order.laptops[0].laptop.price * order.laptops[0].quantity;
@@ -63,7 +64,7 @@ exports.getOneOrder = async (req, res, next) => {
 
         res.status(200).json({
             status: "success",
-            transformedOrder,
+            Order: transformedOrder,
         })
     } catch (err) {
         next(new AppError(err.message, 400));
