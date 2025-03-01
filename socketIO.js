@@ -5,7 +5,7 @@ let io;
 function initSocket(server) {
     io = new Server(server, {
         cors: {
-            origin: ["http://localhost:3000", "http://localhost:5173"], // Allow connections from these frontend URLs
+            origin: ["http://localhost:5173"], // Allow connections from these frontend URLs
             methods: ["GET", "POST"]
         }
     });
