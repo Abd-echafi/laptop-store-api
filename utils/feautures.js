@@ -9,7 +9,7 @@ class APIFeautures {
     //filter method 
     filter = () => {
         // simple filtering
-        const { minPrice, maxPrice, search, category, brand } = this.queryfile;
+        const { minPrice, maxPrice, search, category, brand, status, wilaya } = this.queryfile;
         const query = {};
         if (search) query.model = { $regex: `^${search}`, $options: 'i' };
         if (category) query.category = category;

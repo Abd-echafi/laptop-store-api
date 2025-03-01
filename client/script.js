@@ -4,4 +4,8 @@ socket.on('connect', () => {
     socket.on('newReport', (notification) => {
         console.log(notification);
     })
+
+    socket.on('notification', (notification) => {
+        console.log(notification);
+    })
 })

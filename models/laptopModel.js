@@ -49,6 +49,7 @@ const laptopSchema = new mongoose.Schema({
     category: {
         type: String,
         Enum: ['etudiant', 'bureautique', 'gaming', 'work'],
+        required: [true],
     },
     description: {
         type: String,

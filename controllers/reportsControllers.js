@@ -7,7 +7,7 @@ const { getIO } = require('../socketIO')
 exports.getAllReports = async (req, res, next) => {
     try {
         const reports = new APIFeautures(Report.find(), req.query).filter().sort().paginate();
-        const finalReports = await Report.query.exec();
+        const finalReports = await reports.query.exec();
         res.status(200).json({
             status: "success",
             finalReports,
@@ -17,9 +17,9 @@ exports.getAllReports = async (req, res, next) => {
     }
 }
 
-exports.getOneReport = async (req, res) => {
+exports.getOneReport = async (req, res, next) => {
     try {
-        const report = await Report.findById(req.params);
+        const report = await Report.findById(req.params.id);
         res.status(200).json({
             status: "success",
             report,
@@ -46,6 +46,29 @@ exports.createReport = async (req, res, next) => {
         res.status(201).json({
             status: "success",
             report,
+        })
+    } catch (err) {
+        next(new AppError(err.message, 400));
+    }
+}
+
+exports.updateReport = async (req, res, next) => {
+    try {
+        const report = await Report.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+        res.status(201).json({
+            status: "success",
+            report,
+        })
+    } catch (err) {
+        next(new AppError(err.message, 400));
+    }
+}
+
+exports.deleteReport = async (req, res, next) => {
+    try {
+        await Report.findByIdAndDelete(req.params.id);
+        res.status(201).json({
+            status: "success",
         })
     } catch (err) {
         next(new AppError(err.message, 400));

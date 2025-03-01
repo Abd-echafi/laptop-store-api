@@ -35,9 +35,10 @@ exports.getAllOrders = async (req, res, next) => {
         const orders = new APIFeautures(Order.find(), req.query).filter().sort().paginate();
         const finalOrders = await orders.query.populate("laptops.laptop").populate("checkout").exec();
         // i need an array of objects each object contains : model ,total price ,phone , wilaya;
-        let obj = {};
-        let finalOrdersArray = [];
-        finalOrders.forEach(order => {
+        const finalOrdersArray = [];
+        finalOrders.forEach((order, i) => {
+            const obj = {};
+            console.log('order :', order);
             obj._id = order._id;
             obj.model = order.laptops[0].laptop.model;
             let totalPrice = 0;
@@ -46,7 +47,7 @@ exports.getAllOrders = async (req, res, next) => {
             obj.phone = order.checkout.phone;
             obj.wilaya = order.checkout.address.wilaya
             obj.status = order.orderStatus
-            finalOrdersArray.push(obj);
+            finalOrdersArray[i] = obj;
         });
         res.status(200).json({
             status: "success",
