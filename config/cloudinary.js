@@ -29,7 +29,8 @@ exports.uploadMultiple = async (req, res, next) => {
 exports.uploadSingle = async (req, res, next) => {
     try {
         // Upload the image directly to Cloudinary
-        console.log(req);
+        console.log(req.body);
+        console.log('req.files : ', req.file);
         const result = await cloudinary.uploader.upload(req.file.path, {
             resource_type: "auto"
         });

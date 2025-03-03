@@ -54,6 +54,16 @@ userSchema.pre("findOneAndUpdate", async function (next) {
     next();
 });
 
+userSchema.pre("save", async function (next) {
+    if (this.isModified("password")) {
+        const salt = await bcrypt.genSalt(10);
+        this.password = await bcrypt.hash(this.password, salt);
+        this.comfirmPassword = undefined; // Remove confirm field
+    }
+    next();
+});
+
+
 
 // Method to compare passwords
 userSchema.methods.correctPassword = async function (candidatePassword, currentPassword) {
