@@ -39,14 +39,20 @@ exports.getAllOrders = async (req, res, next) => {
         finalOrders.forEach((order, i) => {
             const obj = {};
             console.log('order :', order);
+            if (order === null || order.laptops[0].laptop === null)
+                return;
             obj._id = order._id;
             obj.model = order.laptops[0].laptop.model;
             let totalPrice = 0;
-            totalPrice = totalPrice + order.laptops[0].laptop.price * order.laptops[0].quantity;
+            for (item of order.laptops) {
+                totalPrice = totalPrice + (item.quantity * item.laptop.price);
+            }
+
             obj.totalPrice = totalPrice;
             obj.phone = order.checkout.phone;
             obj.wilaya = order.checkout.address.wilaya
             obj.status = order.orderStatus
+            obj.laptops = [...order.laptops]
             finalOrdersArray[i] = obj;
         });
         res.status(200).json({
