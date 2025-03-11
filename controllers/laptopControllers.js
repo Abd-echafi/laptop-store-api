@@ -64,19 +64,18 @@ exports.updateLaptop = async (req, res, next) => {
     try {
         const id = req.params.id
         const updates = {};
-        if (req.images) {
+        if (!(req.images.length === 0)) {
             updates.images = req.images;
         }
+        const specProps = ["processor", "RamSize", "RamType", "RamSpeed", "GPU", "storage", "displaySize", "displayQuality", "displayType"];
         for (const key in req.body) {
-            if (typeof req.body[key] === "object" && req.body[key] !== null) {
-                for (const subKey in req.body[key]) {
-                    updates[`${key}.${subKey}`] = req.body[key][subKey];
-                }
+            if (specProps.includes(key)) {
+                // Instead of replacing specs, update only the specific field
+                updates[`specs.${key}`] = req.body[key];
             } else {
                 updates[key] = req.body[key];
             }
         }
-        console.log("Update Object:", updates);
         const updatedLaptop = await Laptop.findByIdAndUpdate(
             id,
             { $set: updates },
